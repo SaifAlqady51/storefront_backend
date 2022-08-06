@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { ProductModel } from '../models/products_model';
 import { TOKEN_SECRET } from '../info';
+import verifyAuthToken from '../middlewares/authorization_middleware';
 
 const product = new ProductModel();
 
@@ -16,7 +17,7 @@ const index = async (req: Request, res: Response, next: NextFunction) => {
 
 const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const singleProduct = await product.show(req.body.id);
+    const singleProduct = await product.show(req.params.id);
     res.json(singleProduct);
   } catch (error) {
     next(error);
@@ -26,7 +27,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authorizationheader = req.headers.authorization;
-    const token = authorizationheader?.split(' ')[0];
+    const token = authorizationheader?.split(' ')[1];
     jwt.verify(token as string, TOKEN_SECRET as string);
   } catch (error) {
     res.status(401);
@@ -45,7 +46,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 const products_routes = (app: express.Application) => {
   app.get('/products', index);
   app.get('/product/:id', show);
-  app.post('/product', create);
+  app.post('/product',verifyAuthToken, create);
 };
 
 export default products_routes;

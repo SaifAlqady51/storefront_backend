@@ -7,13 +7,6 @@ import verifyAuthToken from '../middlewares/authorization_middleware';
 const userModel = new UserModel();
 
 const index = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    jwt.verify(req.body.token, TOKEN_SECRET as string);
-  } catch (error) {
-    res.status(401);
-    res.json('invalid token' + error);
-    return;
-  }
 
   try {
     const allUsers = await userModel.index();
@@ -24,13 +17,7 @@ const index = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const show = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    jwt.verify(req.body.token, TOKEN_SECRET as string);
-  } catch (error) {
-    res.status(401);
-    res.json('invalid token' + error);
-    return;
-  }
+
 
   try {
     const user = await userModel.show(req.params.id);
@@ -44,17 +31,35 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createdUser = await userModel.create(req.body);
-    const token = jwt.sign({ user: createdUser }, TOKEN_SECRET as string);
-    res.json({
-      status: 'success',
-      data: { ...createdUser, token },
-      message: 'user created successfully',
-    });
+    const {firstName,lastName,password} = req.body;
+
+    if(firstName === undefined || lastName === undefined || password === undefined){
+      res.json({
+        message:"Please make sure to fill all the inputes {fistName,lastName,password}"
+      })
+    }else{
+      const createdUser = await userModel.create(req.body);
+      const token = jwt.sign({ user: createdUser }, TOKEN_SECRET as string);
+      res.json({
+        status: 'success',
+        data: { ...createdUser, token },
+        message: 'user created successfully',
+      });
+    }
+
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
+
+const destroy = async(req:Request,res:Response,next:NextFunction) => {
+  try{
+    const deletedUser = await userModel.destroy(req.params.id);
+    res.json(deletedUser)
+  }catch(error){
+    next(error)
+  }
+}
 
 const authenticate = async (
   req: Request,
@@ -63,18 +68,16 @@ const authenticate = async (
 ) => {
   try {
     const { firstName, password } = req.body;
-    const user = await userModel.authenticate(firstName, password);
-    const token = jwt.sign({ user }, TOKEN_SECRET as unknown as string);
-    if (!user) {
+    const hashedPassword = await userModel.authenticate(firstName, password);
+    const token = jwt.sign({ hashedPassword }, TOKEN_SECRET as unknown as string);
+    if (!hashedPassword) {
       return res.status(401).json({
-        status: 'error',
         message: 'the username and passwrod do not match please try again',
       });
     }
     return res.json({
-      status: 'success',
-      data: { user, token },
-      message: 'user autheticated successfully',
+      password:hashedPassword,
+      token: token
     });
   } catch (error) {
     return next(error);
@@ -82,10 +85,11 @@ const authenticate = async (
 };
 
 const user_routes = (app: express.Application) => {
-  app.get('/users', index);
-  app.get('/user/:id', show);
-  app.post('/user/authonticate', authenticate);
+  app.get('/users',verifyAuthToken, index);
+  app.get('/user/:id',verifyAuthToken, show);
+  app.post('/user/authenticate' ,authenticate);
   app.post('/user', create);
+  app.delete('/user',verifyAuthToken,destroy)
 };
 
 export default user_routes;
