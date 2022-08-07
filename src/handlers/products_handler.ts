@@ -1,12 +1,9 @@
-import express, { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import  { NextFunction, Request, Response } from 'express';
 import { ProductModel } from '../models/products_model';
-import { TOKEN_SECRET } from '../info';
-import verifyAuthToken from '../middlewares/authorization_middleware';
 
 const product = new ProductModel();
 
-const index = async (req: Request, res: Response, next: NextFunction) => {
+export const index = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await product.index();
     res.json(products);
@@ -15,7 +12,7 @@ const index = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const show = async (req: Request, res: Response, next: NextFunction) => {
+export const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const singleProduct = await product.show(req.params.id);
     res.json(singleProduct);
@@ -24,29 +21,60 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const create = async (req: Request, res: Response, next: NextFunction) => {
+export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authorizationheader = req.headers.authorization;
-    const token = authorizationheader?.split(' ')[1];
-    jwt.verify(token as string, TOKEN_SECRET as string);
-  } catch (error) {
-    res.status(401);
-    res.json('invalid token' + error);
-    return;
-  }
+    const {name,price,category} = req.body
+    if (
+      name === undefined ||
+      price === undefined ||
+      category === undefined
+    ) {
+      res.json({
+        message:
+          'Please make sure to fill all the inputes {fistName,lastName,password}',
+      });
 
-  try {
-    const singleProduct = await product.create(req.body);
-    res.json(singleProduct);
+    }else{
+      const singleProduct = await product.create(req.body);
+      res.json(singleProduct);
+    }
+
   } catch (error) {
     next(error);
   }
 };
 
-const products_routes = (app: express.Application) => {
-  app.get('/products', index);
-  app.get('/product/:id', show);
-  app.post('/product',verifyAuthToken, create);
-};
+export const destroy = async (req:Request,res:Response,next:NextFunction) => {
+  try{
+    const deletedProduct = await product.destroy(req.params.id);
+    res.json(deletedProduct)
+  }catch(error){
+    next(error)
+  }
+}
 
-export default products_routes;
+export const update = async (req:Request,res:Response,next:NextFunction) => {
+  try{
+    const updatedProdct = await product.update(req.params.id, req.body.name,parseInt(req.body.price,10),req.body.category)
+    res.json(updatedProdct)
+  }catch(error){
+    next(error)
+  }
+}
+
+export const getProudctsByCategory = async (req:Request, res:Response, next:NextFunction) =>{
+  try{
+    const categorizedProducts = await product.getProudctsByCategory(req.params.category);
+    if(categorizedProducts === undefined){
+      res.json({
+        message:"this category does not exist"
+      })
+    }
+    else{
+      res.send(categorizedProducts)
+    }
+  }catch(error){
+    next(error)
+  }
+}
+
