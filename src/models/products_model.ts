@@ -24,7 +24,7 @@ export class ProductModel {
 
       }else{
         const connection = await client.connect();
-        const sql = `SELECT FROM products WHERE id=$1;`;
+        const sql = `SELECT * FROM products WHERE id=$1;`;
         const result = await connection.query(sql, [id]);
         connection.release();
         return result.rows[0];
@@ -59,7 +59,7 @@ export class ProductModel {
       }
       else{
         const connection = await client.connect();
-        const sql = `DELETE FROM produts WHERE id=$1 RETURNIG *`;
+        const sql = `DELETE FROM products WHERE id=$1 RETURNING *`;
         const result = await connection.query(sql,[id])
         connection.release();
         return result.rows[0];

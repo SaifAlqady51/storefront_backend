@@ -1,13 +1,14 @@
 import express from "express";
 import {index,show,create,addProduct,destroy,update} from '../handlers/orders_handler'
+import verifyAuthToken from "../middlewares/authorization_middleware";
 
-const orders_routes = (app: express.Application) => {
-    app.get('/orders', index);
-    app.get('/order/:id', show);
-    app.post('/order', create);
-    app.post('/orders/:id/products', addProduct);
-    app.delete('/order/:id',destroy);
-    app.put('/order/:id',update)
+const orders_routes = (app: express.Router) => {
+    app.route('/orders').get(index);
+    app.route('/order/:id').get(show);
+    app.route('/order').post(verifyAuthToken,create);
+    app.route('/order/:id/product').post(addProduct);
+    app.route('/order/:id').delete(destroy);
+    app.route('/order/:id').put(update)
   };
   
   export default orders_routes;

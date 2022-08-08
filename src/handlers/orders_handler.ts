@@ -31,7 +31,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     ) {
       res.json({
         message:
-          'Please make sure to fill all the inputes {fistName,lastName,password}',
+          'Please make sure to fill all the inputes {fistName,last_name,password}',
       });
 
     }else{
@@ -46,10 +46,17 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const {quantity,product_id} = req.body
+    if(quantity === undefined || product_id === undefined || req.params.id === undefined){
+      res.json({
+        message:
+          'Please make sure to fill all the inputes {quantity,product_id,order_id}',
+      });
+    }
     const productAdded = await orderModel.addProduct(
-      parseInt(req.body.quantity, 10),
-      req.body.order_id,
-      req.body.product_id
+      parseInt(quantity, 10),
+      req.params.id,
+      product_id
     );
     res.json(productAdded);
   } catch (error) {

@@ -25,16 +25,16 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { firstName, lastName, password } = req.body;
+    const { first_name, last_name, password } = req.body;
 
     if (
-      firstName === undefined ||
-      lastName === undefined ||
+      first_name === undefined ||
+      last_name === undefined ||
       password === undefined
     ) {
       res.json({
         message:
-          'Please make sure to fill all the inputes {fistName,lastName,password}',
+          'Please make sure to fill all the inputes {fistName,last_name,password}',
       });
     } else {
       const createdUser = await userModel.create(req.body);
@@ -60,7 +60,7 @@ export const destroy = async (req: Request, res: Response, next: NextFunction) =
 
 export const update = async(req:Request,res:Response,next:NextFunction) => {
   try{
-    const updatedUser = await userModel.update(req.params.id,req.body.firstName,req.body.lastName,req.body.password)
+    const updatedUser = await userModel.update(req.params.id,req.body.first_name,req.body.last_name,req.body.password)
     res.json(updatedUser);
   }catch(error){
     next(error)
@@ -73,8 +73,8 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    const { firstName, password } = req.body;
-    const hashedPassword = await userModel.authenticate(firstName, password);
+    const { first_name, password } = req.body;
+    const hashedPassword = await userModel.authenticate(first_name, password);
     const token = jwt.sign(
       { hashedPassword },
       TOKEN_SECRET as unknown as string
@@ -85,7 +85,7 @@ export const authenticate = async (
       });
     }
     return res.json({
-      password: hashedPassword,
+      user: hashedPassword,
       token: token,
     });
   } catch (error) {
