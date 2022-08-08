@@ -3,7 +3,7 @@ import { ProductModel } from '../models/products_model';
 
 const product = new ProductModel();
 
-export const index = async (req: Request, res: Response, next: NextFunction) => {
+export const index = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await product.index();
     res.json(products);
@@ -31,7 +31,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     ) {
       res.json({
         message:
-          'Please make sure to fill all the inputes {fistName,lastName,password}',
+          'Please make sure to fill all the inputes {name,price,category}',
       });
 
     }else{
