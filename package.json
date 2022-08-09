@@ -7,7 +7,7 @@
     "build": "npx tsc",
     "start": "nodemon src/server.ts",
     "test_dev": "npm run build && jasmine",
-    "test": "export ENV=test && db-migrate up --env test && tsc && jasmine && db-migrate reset",
+    "test": "export ENV=test && tsc && db-migrate up --env test && tsc && jasmine &&  db-migrate reset --env test",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "lint": "eslint 'src/**/*.ts'"
   },
@@ -49,7 +49,6 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.3",
-    "sinon": "^14.0.0"
+    "pg": "^8.7.3"
   }
 }
