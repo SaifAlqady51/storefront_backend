@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
-import dotenv from 'dotenv';
 import api from './routes/api/api';
-dotenv.config();
+import { POSTGRES_PORT } from './info';
+
 const app: express.Application = express();
 
-const port = 3000;
+const port = POSTGRES_PORT ;
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {

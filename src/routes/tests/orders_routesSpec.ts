@@ -80,14 +80,14 @@ describe('Test orders endpoints', () => {
   });
 
   it('Test Get /api/orders endpoint (INDEX)', async () => {
-    const response = await request.get('/api/orders');
+    const response = await request.get('/api/orders').set('Authorization', `Bearer ${tok}`);
     const orders = response.body;
     expect(response.status).toBe(200);
     expect(orders).toEqual([order_1, order_2]);
   });
 
   it('Test Get /api/order/:id endpoint (SHOW)', async () => {
-    const response = await request.get('/api/order/1');
+    const response = await request.get('/api/order/1').set('Authorization', `Bearer ${tok}`);
     const order = response.body;
     expect(response.status).toBe(200);
     expect(order).toEqual(order_1);
