@@ -9,7 +9,7 @@ Udacity second project fullstack course, this project is about making a store ba
   
  - type in the terminal `db-migrate up` to migrate the database
  - type in the terminal `npm run start` to start the server
- - go to localhost:3000 port
+ - go to `localhost:3000` port
  - type in the terminal `npm run test` to test the api
 
 ## packages 
