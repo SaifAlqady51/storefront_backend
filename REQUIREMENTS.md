@@ -1,4 +1,20 @@
-# API ROUTES
+## Data structure
+
+
+### Users
+
+|   Column   |          Type          |      
+| ---------- | ---------------------- |
+| id         | integer                |           
+| first_name | character varying(64)  |  
+| last_name  | character varying(64)  |           
+| password   | character varying(255) | 
+
+| id | first_name | last_name | password |
+| -- | ---------- | --------- | -------- |
+
+
+## API ROUTES
 
 ### User
  - Make a POST request on `localhost:3000/api/user` and enter the body {first_name,last_name,password} to create a user

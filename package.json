@@ -6,7 +6,6 @@
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon src/server.ts",
-    "test_dev": "npm run build && jasmine",
     "test": "export ENV=test && tsc && db-migrate up --env test && tsc && jasmine &&  db-migrate reset --env test",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "lint": "eslint 'src/**/*.ts'"
