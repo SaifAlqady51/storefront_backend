@@ -18,7 +18,7 @@ Udacity second project fullstack course, this project is about making a store ba
 
 ## Environment variables
  - ENV=dev
- - POSTGRES_PORT:3000
+ - POSTGRES_PORT:5432
  - POSTGRES_HOST=localhost
  - POSTGRES_DB=store_database_dev
  - POSTGRES_DB_TEST=store_database_test
