@@ -13,6 +13,16 @@ Udacity second project fullstack course, this project is about making a store ba
  - go to `localhost:3000` port
  - type in the terminal `npm run test` to test the api
 
+## Environment variables
+ - ENV=dev
+ - POSTGRES_HOST=localhost
+ - POSTGRES_DB=store_database_dev
+ - POSTGRES_DB_TEST=store_database_test
+ - POSTGRES_USER=postgres
+ - POSTGRES_PASSWORD=qwer1234
+ - BCRYPT_PASSWORD=inside-the-tunnel
+ - SALT_ROUNDS=10
+ - TOKEN_SECRET=thethirdcart
 ## packages 
  - express
  - nodemon
