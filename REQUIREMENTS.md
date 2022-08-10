@@ -10,8 +10,31 @@
 | last_name  | character varying(64)  |           
 | password   | character varying(255) | 
 
-| id | first_name | last_name | password |
-| -- | ---------- | --------- | -------- |
+### Products
+                       
+|  Column  |         Type          | 
+| -------- | --------------------- |
+| id       | integer               |
+| name     | character varying(64) |
+| price    | integer               | 
+| category | character varying(64) |     
+
+### Orders
+
+| Column  |         Type          |
+| ------- | --------------------- |
+| id      | integer               |        
+| status  | character varying(64) | 
+| user_id | bigint                |
+
+### orders_products
+
+|   Column   |  Type   | 
+| ---------- | ------- |
+| id         | integer |
+| quantity   | integer |           
+| order_id   | bigint  |           
+| product_id | bigint  |       
 
 
 ## API ROUTES
