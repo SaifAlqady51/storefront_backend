@@ -3,7 +3,7 @@ Udacity second project fullstack course, this project is about making a store ba
 
 ## instructions
  - database set up:
-   - type in PSQL terminal CREATE USER `postgres` WITH PASSWORD `qwer1234`
+   - type in PSQL terminal `CREATE USER postgres WITH PASSWORD qwer1234`
    - type `CREATE DATABASE store_database_dev`
    - type `CREATE DATABASE store_database_test`
   
