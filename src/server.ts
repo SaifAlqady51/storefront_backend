@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
 import api from './routes/api/api';
-import { POSTGRES_PORT } from './info';
 
 const app: express.Application = express();
 
-const port = POSTGRES_PORT ;
+const port = 3000;
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {

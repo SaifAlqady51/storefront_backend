@@ -10,12 +10,12 @@ import {
 import verifyAuthToken from '../middlewares/authorization_middleware';
 
 const orders_routes = (app: express.Router) => {
-  app.route('/orders').get(verifyAuthToken,index);
-  app.route('/order/:id').get(verifyAuthToken,show);
+  app.route('/orders').get(verifyAuthToken, index);
+  app.route('/order/:id').get(verifyAuthToken, show);
   app.route('/order').post(verifyAuthToken, create);
-  app.route('/order/:id/product').post(verifyAuthToken,addProduct);
-  app.route('/order/:id').delete(verifyAuthToken,destroy);
-  app.route('/order/:id').put(verifyAuthToken,update);
+  app.route('/order/:id/product').post(verifyAuthToken, addProduct);
+  app.route('/order/:id').delete(verifyAuthToken, destroy);
+  app.route('/order/:id').put(verifyAuthToken, update);
 };
 
 export default orders_routes;
